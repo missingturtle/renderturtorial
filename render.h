@@ -363,6 +363,88 @@ inline std::string vector_repr(const Vector<N, T>& a){
 }
 
 // mathlab Matrix
+template <size_t ROW, size_t COL, typename T> struct Matrix {
+    T m[ROW][COL];
+    inline Matrix() {}
+    inline Matrix(const Matrix<ROW, COL, T>& src){
+        for (sizt_t r = 0; r < ROW; r++){
+            for(sizt_t c = 0; c < COL; c++)
+                m[r][c] = src.m[r][c];
+        }
+    }
+    inline Matrix(const std::initializer_list<Vector<COL, T>> &u){
+        auto it = u.begin();
+        for(size_t i = 0; i < ROW; i++) SetRow(i, *it++);
+    }
+    inline const T* operator [] (size_t row) const {assert(row < ROW); return m[row];}
+    inline T* operator [] (size_t row) {assert (row < ROW); return m[row];}
 
+    //get a row
+    inline Vector<COL, T> Row(size_t row) const{
+        assert(row < ROW);
+        Vector<COL, T> a;
+        for(size_t i = 0; i < COL; i++ ) a[i] = m[row][i];
+        return a;
+    }
 
+    //get a col
+    inline Vector<ROW, T> Col(size_t col) const{
+        assert(col < COL);
+        Vector<ROW, T> a;
+        for(size_t i = 0; i < ROW; i++) a[i] = m[i][col];
+        return a;
+    }
+
+    //set a row
+    inline void SetRow(size_t row, const Vector<COL, T>& a){
+        assert(row < ROW);
+        for(size_t i = 0; i < COL; i++) m[row][i] = a[i];
+    }
+
+    //set a col
+    inline void SetCol (szie_t col, const Vector<ROW, T>& a){
+        assert(col < COL);
+        for(size_t i = 0; i < ROW; i++) m[i][col] = a[i];
+    }
+
+    //get Matrix<ROW - 1, COL - 1, T>
+    inline Matrix<ROW - 1, COL - 1, T> GetMinor (size_t row, size_t col) const{
+        Matrix<ROW - 1, COL - 1, T> ret;
+        for(size_t r = 0; r < ROW - 1; r++){
+            for(size_t c = 0; c < COL - 1; c++)
+                ret.m[r][c] = m[r < row ? r : r+1][c < col ? c : c + 1];
+        }
+        return ret;
+    }
+
+    //get transpose of a matrix
+    inline Matrix<COL, ROW, T> Transpose() const{
+        Matrix<COL, ROW, T> ret;
+        for(size_t r = 0; r < ROW; r++){
+            for(size_t c = 0; c < COL; c++)
+                ret.m[c][r] = m[r][c];
+        }
+        return ret;
+    }
+
+    // zero matrix
+    inline static Matrix<ROW, COL, T> GetZero() {
+		Matrix<ROW, COL, T> ret;
+		for (size_t r = 0; r < ROW; r++) {
+			for (size_t c = 0; c < COL; c++) 
+				ret.m[r][c] = 0;
+		}
+		return ret;
+	}
+
+    // Identity matrix
+    inline static Matrix<ROW, COL, T> GetIdentity(){
+        Matrix<ROW, COL, T> ret;
+        for(size_t r = 0; r < ROW; r++) {
+            for(size_t c = 0; c < COL; c++)
+                ret.m[r][c] = (r == c) ? 1 : 0;
+        }
+        return ret;
+    }
+};
 
