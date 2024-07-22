@@ -307,6 +307,62 @@ inline Vector<N, T> vector_max(const Vector<N, T>& a, const Vector<N, T>& b){
     return c; 
 }
 
-//
+//Vector between Max and Min
+template <size_t N, typename T>
+inline Vector<N, T> vector_between(const Vector<N, T>& minx, const Vector<N, T>& maxx, const Vector<N, T>& x){
+    return vector_min(vector_max(minx, x), maxx);
+}
+
+//vector near
+template <size_t N, typename T>
+inline bool vector_near(const Vector<N, T>& a, const Vector<N, T>& b, T dist){
+    return (vector_length_square(a - b) <= dist);
+}
+
+//vector float near
+template <size_t N>
+inline bool vector_near_equal(const Vector<N, float>& a, const Vector<N, float>& b, float e = 0.0001){
+    return vector_near(a, b, e);
+}
+
+//vector double near
+template <size_t N>
+inline bool vector_near_equal(const Vector<N, double>& a, const Vector<N, double>& b, double e = 0.0000001){
+    return vector_near(a, b, e);
+}
+
+// vector clamp :Create a copy of this vector, with its magnitude/size/length clamped between Min and Max.
+template <size_t N, typename T>
+inline Vector<N, T> vector_clamp(const Vector<N, T>& a, T minX = 0, T maxx = 1){
+    Vector<V, T> b;
+    for(size_t i = 0; i < N; i++){
+        T x = (a[i] < minx) ? minx : a[i];
+        b[i] = (x > maxx) ? maxx : x;  
+    }
+    return b;
+}
+
+// output to text stream
+template <size_t N, typename T>
+inline std::ostream& operator << (std::ostream& os, const Vector<N, T>& a){
+    os << "[";
+    for(size_t i = 0; i < N; i++){
+        os << a[i];
+        if(i < N - 1) os << ", ";
+    }
+    os << "]";
+    return os;
+}
+
+// output to string
+template <size_t N, typename T>
+inline std::string vector_repr(const Vector<N, T>& a){
+    std::stringstream ss;
+    ss << a;
+    return ss.str();
+}
+
+// mathlab Matrix
+
 
 
