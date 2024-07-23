@@ -448,3 +448,23 @@ template <size_t ROW, size_t COL, typename T> struct Matrix {
     }
 };
 
+// mathlab matrix functions
+template<size_t ROW, size_t COL, typename T>
+inline bool operator == (const Matrix<ROW, COL, T>& a, const Matrix<ROW, COL, T>& b){
+    for(size_t r = 0; r < ROW; r++){
+        for(size_t  c = 0; c < COL; c++){
+            if(a.m[r][c] != b.m[r][c]) return false;
+        }
+    }
+    return true;
+}
+
+template<size_t ROW, size_t COL, typename T>
+inline bool operator != (const Matrix<ROW, COL, T>& a, const Matrix<ROW, COL, T>& b){
+    return !(a == b);
+}
+
+template<size_t ROW, size_t COL, typename T>
+inline Matrix<ROW, COL, T> operator + (const Matrix<ROW, COL, T>& a, const Matrix<ROW, COL, T>& b){
+    return !(a == b);
+}
