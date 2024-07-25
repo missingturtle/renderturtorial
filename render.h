@@ -623,5 +623,28 @@ inline std::ostream& operator << (std::ostream& os, const Matrix<ROW, COL, T>& m
 }
 
 //functions
+template <typename T> inline T Abs(T x) {return (x < 0) ? (-x) : x;}
+template <typename T> inline T Max(T x, T y) {return (x < y) ? y : x;}
+template <typename T> inline T Min(T x, T y) {return (x > y) ? y : x;}
+template <typename T> inline bool NearEqual(T x, T y, T error) {return (Abs(x - y) < error);}
+template <typename T> inline T Between(T xmin, T xmax, T x) {return Min(Max(xmin, x), xmax);}
+//截取[0 , 1]的范围
+template <typename T> inline T Saturate(T x) {return Between (0, 1 ,x);}
 
+typedef Vector<2, float>  Vec2f;
+typedef Vector<2, double> Vec2d;
+typedef Vector<2, int>    Vec2i;
+typedef Vector<3, float>  Vec3f;
+typedef Vector<3, double> Vec3d;
+typedef Vector<3, int>    Vec3i;
+typedef Vector<4, float>  Vec4f;
+typedef Vector<4, double> Vec4d;
+typedef Vector<4, int>    Vec4i;
+
+typedef Matrix<4, 4, float> Mat4x4f;
+typedef Matrix<3, 3, float> Mat3x3f;
+typedef Matrix<4, 3, float> Mat4x3f;
+typedef Matrix<3, 4, float> Mat3x4f;
+
+//3D 数学运算
 
